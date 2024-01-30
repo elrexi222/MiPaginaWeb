@@ -2,6 +2,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const cors = require('cors'); // Importa el paquete cors
 const axios = require('axios');//PUSHBULLET requiere axios
+
 const bodyParser = require('body-parser');  // Agrega esta línea para importar bodyParser
 const app = express();
 let notificacion2 = 0;
@@ -17,6 +18,13 @@ app.use(express.json()); // Utiliza el middleware incorporado para analizar el c
 
 // Middleware para parsear el cuerpo de las solicitudes como JSON
 app.use(bodyParser.json());
+
+
+//configuara la variable de entorno para la conexion con el puerto
+if(process.env.NODE_ENV !=='production'){
+  require('dotenv').config();
+
+} 
 
 // Crea una nueva base de datos SQLite en disco
 const db = new sqlite3.Database('bd.db', {
@@ -680,11 +688,11 @@ app.post('/comprobacion-si-hay-pedido-en-curos', (req, res) => {
 
 
 
+const puerto = process.env.PORT || 9000
 
 
-
-app.listen(9000,'0.0.0.0', () => {
-  console.log('Servidor escuchando en el puerto 9000');
+app.listen(puerto,'0.0.0.0', () => {
+  console.log(`Servidor escuchando en el puerto ${puerto}`);
 });
 
 
